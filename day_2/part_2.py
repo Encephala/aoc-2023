@@ -1,4 +1,5 @@
 from functools import reduce
+from math import prod
 
 filename = "final.txt"
 
@@ -27,12 +28,9 @@ def game_to_minima(game_info: str) -> dict[str, int]:
     return minima
 
 
-def product_of_numbers(numbers):
-    return reduce(lambda count, acc: count * acc, numbers, 1)
-
 
 def minima_to_power(minima: dict[str, int]) -> int:
-    return product_of_numbers(minima.values())
+    return prod(minima.values())
 
 
 sum_of_powers = 0
