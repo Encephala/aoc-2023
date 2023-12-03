@@ -30,8 +30,8 @@ fn part2(input: String) -> u32 {
         // Escape the newline at the end of the file
         if line == "" { break }
 
-        let mut indices_for_min: [(usize, &str); 18] = [(std::usize::MAX, ""); 18];
-        let mut indices_for_max: [(usize, &str); 18] = [(std::usize::MIN, ""); 18];
+        let mut indices_for_min: [(usize, &str); 18] = [(0, ""); 18];
+        let mut indices_for_max: [(usize, &str); 18] = [(0, ""); 18];
 
         for (i, key) in digit_map.keys().enumerate() {
             match line.find(key) {
@@ -42,23 +42,26 @@ fn part2(input: String) -> u32 {
             }
 
 
-            // Prevent usize underflow
-            if key.len() > line.len() {
-                continue;
-            }
-
-            for char_index in (0..line.len() - key.len() + 1).rev() {
-                if &&line[char_index..char_index + key.len()] == key {
-                    indices_for_max[i] = (char_index, key);
-                    break;
-                }
+            match line.rfind(key) {
+                Some(index) => {
+                    indices_for_max[i] = (index, key);
+                },
+                None => ()
             }
         }
 
-        let first_digit = digit_map[indices_for_min.iter().filter(|tuple| tuple.1 != "")
-            .min_by_key(|tuple| tuple.0).expect("You passed an empty iterator you dummy").1];
-        let last_digit = digit_map[indices_for_max.iter().filter(|tuple| tuple.1 != "")
-            .max_by_key(|tuple| tuple.0).expect("You passed an empty iterator you dummy").1];
+        let first_digit = digit_map[
+            indices_for_min.iter()
+                           .filter(|tuple| tuple.1 != "")
+                           .min_by_key(|tuple| tuple.0)
+                           .expect("You passed an empty iterator you dummy").1
+        ];
+        let last_digit = digit_map[
+            indices_for_max.iter()
+                           .filter(|tuple| tuple.1 != "")
+                           .max_by_key(|tuple| tuple.0)
+                           .expect("You passed an empty iterator you dummy").1
+        ];
 
 
         first_digits.push(first_digit);
