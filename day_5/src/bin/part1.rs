@@ -84,7 +84,7 @@ fn part1(input: String) -> usize {
 
 fn main() {
     let filename: &str = "final.txt";
-let input = std::fs::read_to_string(filename).expect("Problem while reading file");
+    let input = std::fs::read_to_string(filename).expect("Problem while reading file");
 
     println!("Result: {}", part1(input));
 }
